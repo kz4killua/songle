@@ -1,0 +1,194 @@
+:root {
+    --spotify-black: #191414;
+    --spotify-green: #1db954;
+    --spotify-white: #ffffff;
+
+    --custom-gray: rgb(50, 50, 50);
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: var(--spotify-black);
+    font-family: sans-serif, Helvetica, Arial;
+    text-align: center;
+    overflow: hidden;
+}
+
+main {
+    height: 100%;
+    margin: 20px;
+    color: var(--spotify-white);
+}
+
+div {
+    margin: 0 0 15px 0;
+}
+
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+}
+
+button {
+    border-style: none;
+    border-radius: 50px;
+    background-color: var(--spotify-green);
+    font-weight: bolder;
+    color: var(--spotify-white);
+}
+
+button:hover {
+    background-color: #2e9753;
+    cursor: pointer;
+}
+
+.unstyled {
+    /* Remove bullets and padding in lists. Included in Bootstrap.*/
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0;
+}
+
+.center-vertical {
+    /* Center the contents of a div vertically. */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrap-ellipsis {
+    /* Wrap overflow text with ellipsis. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%
+}
+
+.h20 {
+    height: 20%;
+}
+
+.h30 {
+    height: 30%;
+}
+
+.h40 {
+    height: 40%;
+}
+
+.h50 {
+    height: 50%;
+}
+
+.h60 {
+    height: 60%;
+}
+
+.h70 {
+    height: 70%;
+}
+
+.game-title {
+    font-weight: bolder;
+    font-size: 90px;
+    color: var(--spotify-green);
+}
+
+.game-subtitle {
+    font-weight: bold;
+    font-size: 25px;    
+}
+
+.spotify-icon-large {
+    height: 60px;
+    padding-bottom: 20px;
+}
+
+.spotify-icon-small {
+    height: 30px;
+    padding-bottom: 20px;
+}
+
+.large-button {
+    height: 60px;
+    width: 250px;
+    font-size: 20px;
+}
+
+.small-button {
+    height: 35px;
+    width: 80px;
+    font-size: 15px;
+}
+
+input {
+    height: 20px;
+    background-color: var(--spotify-black);
+    color: var(--spotify-white);
+    border: 1px solid var(--spotify-white);
+    font-size: 17px;
+    padding: 10px 10px 10px 25px;
+}
+
+.form-input > input[type="text"] {
+    max-width: 400px;
+    width: 60%;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.form-input > button[type="submit"] {
+    width: 25%;
+    max-width: 100px;
+    height: 45px;
+    font-size: 15px;
+    border: 1px solid var(--spotify-black);
+    border-radius: 0px 20px 20px 0px;
+}
+
+.gray-rounded {
+    background-color: var(--custom-gray);
+    border-radius: 15px;
+    margin: 5px;
+    padding: 10px;
+}
+
+.user-display {
+    width: 40%;
+}
+
+#connected-users {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cover-img {
+    max-width: 100%;
+    margin: 0 0 5px 0;
+    max-height: 40%;
+}
+
+.track-suggestion {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: var(--custom-gray);
+}
+
+.track-suggestion:hover {
+    background-color: var(--spotify-black);
+}

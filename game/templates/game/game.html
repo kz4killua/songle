@@ -1,0 +1,58 @@
+{% extends "game/base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Game Room
+{% endblock %}
+
+{% block main %}
+
+    <form hidden id="settings">
+        <input type="hidden" value="{{ game_id }}" id="game-id">
+        <input type="hidden" value="{{ playlist }}" id="playlist-id">
+        <input type="hidden" value="{{ is_admin }}" id="is-admin">
+        <input type="hidden" value="{{ username }}" id="username">
+        <input type="hidden" value="{{ access_token }}" id="access-token">
+        <input type="hidden" value="{{ refresh_token }}" id="refresh-token">
+    </form>
+
+    <div id="waiting-room" class="full-height">
+
+        <div class="h20 center-vertical">
+            <div class="game-subtitle">Join game with code: {{ game_id }}</div>
+            <div><button class="small-button" id="copy-code-button">Copy</button></div>
+        </div>
+
+        <div class="h50">
+            <div class="game-subtitle">Connected: <span id="number-of-connected-users"></span></div>
+            <div id="connected-users" class="wrap-ellipsis"></div>
+        </div>
+
+        {% if is_admin %}
+            <div>
+                <button class="large-button" id="start-game-button">Start Game</button>
+            </div>
+        {% endif %}
+        <!--Add so that when a lotta people join, only top show. Or make it scroll.-->
+    </div>
+
+    <div id="playing-room" class="full-height" hidden>
+
+        <div id="tracks-container">
+        </div>
+
+        <div>
+            <input id="track-search" placeholder="Type to search...">
+        </div>
+
+        <div class="h30">
+            <ul id="autocomplete" class="unstyled"></ul>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'game/game.js' %}"></script>
+{% endblock %}
