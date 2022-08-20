@@ -402,7 +402,7 @@ function sendUserScore() {
 
     const trackDivs = document.querySelectorAll('.track-div');
     const currentTime = trackDivs[currentTrack - 1].querySelector('audio').currentTime;
-    const score = (trackPlayTime / 1000) - currentTime;
+    const score = Math.round((trackPlayTime / 1000) - currentTime);
 
     socket.send(JSON.stringify({
         'message': {
