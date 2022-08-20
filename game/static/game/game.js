@@ -394,6 +394,11 @@ function userReady(user) {
     // Update to the list of ready users
     readyUsers.push(user['user_id']);
 
+    // If the game is over, stop
+    if (currentTrack === numberOfTracks) {
+        return;
+    }
+
     if (isAdmin) {
         // If all connected users are ready, move to next song
         if (Object.keys(connectedUsers).every(item => readyUsers.includes(item))) {
