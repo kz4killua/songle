@@ -55,6 +55,8 @@ const socket = new WebSocket(
 
 socket.onopen = (e) => {
     console.log('Socket opened!');
+    // Get previously connected users
+    sendPollRequest();
 };
 
 
@@ -91,6 +93,10 @@ socket.onmessage = (e) => {
         case 'NEXT_TRACK':
             nextTrack();
             break;
+
+        case 'POLL_REQUEST':
+            sendUserConnected();
+            break;
     
         default:
             break;
@@ -102,6 +108,28 @@ socket.onmessage = (e) => {
 socket.onclose = (e) => {
     console.log('Socket closed!');
 };
+
+
+function sendUserConnected() {
+    // Send user details
+    socket.send(JSON.stringify(
+        {'message': {
+            'type': 'USER_CONNECTED',
+            'user': currentUser,
+            'message': `User ${currentUser['username']} has been connected!` 
+        }}
+    ))
+}
+
+
+function sendPollRequest() {
+    // Ask all previously connected users to send their details
+    socket.send(JSON.stringify(
+        {'message': {
+            'type': 'POLL_REQUEST'
+        }}
+    ))
+}
 
 
 function userConnected(user) {
