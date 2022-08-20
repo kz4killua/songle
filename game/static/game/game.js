@@ -254,7 +254,14 @@ function endRound() {
 function updateScoresDisplay() {
 
     let rows = [];
-    for (const user in scores) {
+
+    // Sort users in descending order of scores
+    let sortedUsers = Object.keys(scores).sort((a, b) => {
+        return scores[b] - scores[a]
+    })
+
+    // Create rows for each user
+    for (const user of sortedUsers) {
         // Create a table row and two cells
         let row = document.createElement('tr');
         let cell1 = document.createElement('td');
@@ -262,6 +269,9 @@ function updateScoresDisplay() {
         // Apply styles
         cell1.setAttribute('class', 'wrap-ellipsis');
         cell2.setAttribute('class', 'wrap-ellipsis');
+        if (user === currentUser['user_id']) {
+            row.style.color = '#1db954';
+        }
         // Place cells in the row
         row.append(cell1, cell2)
         // Fill in the user's score details
