@@ -206,6 +206,8 @@ function sendLoadGame() {
 
 function nextTrack() {
 
+    // Clear input field
+    document.querySelector('#track-search').value = '';
     // Hide the scores display
     hideScores();
 
@@ -296,6 +298,8 @@ function revealTrack() {
     trackDivs[currentTrack - 1].querySelector('.artist-display').innerHTML = getTrackArtists(gameTracks[currentTrack - 1]).join(', ');
     // Add track name
     document.querySelector('#track-search').value = gameTracks[currentTrack - 1]['name'];
+    // Clear autocomplete
+    document.querySelector('#autocomplete').replaceChildren();
 }
 
 
