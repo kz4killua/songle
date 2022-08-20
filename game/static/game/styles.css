@@ -192,3 +192,20 @@ input {
 .track-suggestion:hover {
     background-color: var(--spotify-black);
 }
+
+#scores-table {
+    width: 100%;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+tr {
+    line-height: 50px;
+    width: 100%;    
+}
+
+td {
+    width: 30%;
+    display: inline-block;
+    border-top: 1px solid var(--spotify-white);
+}

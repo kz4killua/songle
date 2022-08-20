@@ -12,6 +12,8 @@ const numberOfTrackSuggestions = 5;
 
 const trackPlayTime = 30_000;
 const trackPlayInterval = 6_000;
+const scoreDisplayInterval = 6_000;
+const gameLoadTime = 3_000;
 
 
 let gameTracks = [];
@@ -136,6 +138,9 @@ function displayUsers() {
 
 function sendLoadGame() {
 
+    // Disable the start game button
+    document.querySelector('#start-game-button').setAttribute('disabled', '');
+
     // Fetch 5 random tracks from the selected playlist
     fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
         method: 'GET',
@@ -172,6 +177,10 @@ function sendLoadGame() {
 
 
 function nextTrack() {
+
+    // Hide the scores display
+    hideScores();
+
     const trackDivs = document.querySelectorAll('.track-div');
     // Clear the ready list
     ready.length = 0;
@@ -200,10 +209,53 @@ function endRound() {
     revealTrack();
     // Send score
     sendUserScore();
-    // After 3 more seconds, send USER_READY
+
     setTimeout(() => {
-        sendUserReady();
+        // Display scores
+        displayScores();
+        // After another n seconds, sendUserReady
+        setTimeout(() => {
+            sendUserReady();
+        }, scoreDisplayInterval);
     }, trackPlayInterval);
+}
+
+
+function updateScoresDisplay() {
+
+    let rows = [];
+    for (const user in scores) {
+        // Create a table row and two cells
+        let row = document.createElement('tr');
+        let cell1 = document.createElement('td');
+        let cell2 = document.createElement('td');
+        // Apply styles
+        cell1.setAttribute('class', 'wrap-ellipsis');
+        cell2.setAttribute('class', 'wrap-ellipsis');
+        // Place cells in the row
+        row.append(cell1, cell2)
+        // Fill in the user's score details
+        cell1.innerHTML = user;
+        cell2.innerHTML = scores[user];
+        rows.push(row);
+    }
+
+    // Update the scores display
+    document.querySelector('#scores-table')
+        .querySelector('tbody')
+        .replaceChildren(...rows)
+}
+
+
+function hideScores() {
+    document.querySelector('#scores-display').setAttribute('hidden', '');
+    document.querySelector('#playing-room').removeAttribute('hidden');
+}
+
+
+function displayScores() {
+    document.querySelector('#playing-room').setAttribute('hidden', '');
+    document.querySelector('#scores-display').removeAttribute('hidden');
 }
 
 
@@ -224,10 +276,6 @@ function loadGame(tracks) {
     const waitingRoom = document.querySelector('#waiting-room');
     const playingRoom = document.querySelector('#playing-room');
     const tracksContainer = document.querySelector('#tracks-container');
-
-    // Hide the waiting room and show the game room
-    waitingRoom.setAttribute('hidden', '');
-    playingRoom.removeAttribute('hidden');
 
     // Clear any previous tracks
     gameTracks.length = 0;
@@ -278,8 +326,13 @@ function loadGame(tracks) {
         tracksContainer.appendChild(trackDiv);
     });
 
-    // Send a ready message
-    sendUserReady();
+    setTimeout(() => {
+        // Hide the waiting room and show the game room
+        waitingRoom.setAttribute('hidden', '');
+        playingRoom.removeAttribute('hidden');
+        // Send a ready message
+        sendUserReady();
+    }, gameLoadTime);
 }
 
 
@@ -336,12 +389,14 @@ function userScore(user, score) {
     } else {
         scores[user] += score;
     }
+    // Update scores display
+    updateScoresDisplay();
 }
 
 
 function checkTrack() {
 
-    if (hashTrack(gameTracks[currentTrack - 1]) === this.dataset['track']) {
+    if (hashTrack(gameTracks[currentTrack - 1]).toLowerCase() === this.dataset['track'].toLowerCase()) {
         // Reveal the track
         revealTrack();
         // Cancel the timeout
