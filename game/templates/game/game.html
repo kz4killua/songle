@@ -11,8 +11,8 @@
     <form hidden id="settings">
         <input type="hidden" value="{{ game_id }}" id="game-id">
         <input type="hidden" value="{{ playlist }}" id="playlist-id">
-        <input type="hidden" value="{{ is_admin }}" id="is-admin">
         <input type="hidden" value="{{ username }}" id="username">
+        <input type="hidden" value="{{ user_id }}" id="user-id">
         <input type="hidden" value="{{ access_token }}" id="access-token">
         <input type="hidden" value="{{ refresh_token }}" id="refresh-token">
     </form>
@@ -20,7 +20,7 @@
     <div id="waiting-room" class="full-height">
 
         <div class="h20 center-vertical">
-            <div class="game-subtitle">Join game with code: {{ game_id }}</div>
+            <div class="game-subtitle">Copy join code</div>
             <div><button class="small-button" id="copy-code-button">Copy</button></div>
         </div>
 
@@ -29,7 +29,7 @@
             <div id="connected-users" class="wrap-ellipsis"></div>
         </div>
 
-        {% if is_admin %}
+        {% if user_id == game_id %}
             <div>
                 <button class="large-button" id="start-game-button">Start Game</button>
             </div>

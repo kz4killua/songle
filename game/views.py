@@ -1,5 +1,4 @@
 import os
-import random
 import base64
 
 from django.http import HttpResponseRedirect, JsonResponse
@@ -11,20 +10,16 @@ from django.shortcuts import render
 SONGLE_REDIRECT_URI = 'http://localhost:8000/game/spotifyauthorize'
 
 
-def index(request, username=None, access_token=None, refresh_token=None):
-    return render(request, "game/index.html", {
-        'username': username,
-        'access_token': access_token,
-        'refresh_token': refresh_token
-    })
+def index(request, user_data=None):
+    return render(request, "game/index.html", user_data)
 
 
-def game(request, game_id, is_admin=False, playlist=None):
+def game(request, game_id, playlist=None):
     # Render the game template.
     return render(request, "game/game.html", {
         'game_id': game_id,
-        'is_admin': is_admin,
         'username': request.GET['username'],
+        'user_id': request.GET['user_id'],
         'playlist': playlist,
         'access_token': request.GET['access_token'],
         'refresh_token': request.GET['refresh_token'],
@@ -32,12 +27,7 @@ def game(request, game_id, is_admin=False, playlist=None):
 
 
 def create_game(request):
-    # Generate a random game ID.
-    game_id = str(random.randrange(99999))
-    # Save the playlist.
-    playlist = request.GET['playlist']
-
-    return game(request, game_id, True, playlist)
+    return game(request, request.GET['user_id'], request.GET['playlist'])
 
 
 def join_game(request):
@@ -71,7 +61,7 @@ def authorize(request):
         )
         response = response.json()
 
-        # Get access token and refresh token
+        # Save access and refresh tokens
         access_token = response['access_token']
         refresh_token = response['refresh_token']
 
@@ -81,16 +71,21 @@ def authorize(request):
             headers = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': f'Bearer {access_token}',
+                'Authorization': f'Bearer {response["access_token"]}',
             }
         )
         response = response.json()
 
-        # Get username
-        username = response['display_name']
+        # Gather user data
+        user_data = {
+            'username': response['display_name'],
+            'user_id': response['id'],
+            'access_token': access_token,
+            'refresh_token': refresh_token,
+        }
 
         # Return to the index view
-        return index(request, username, access_token, refresh_token)
+        return index(request, user_data)
 
 
     else:
@@ -104,5 +99,3 @@ def authorize(request):
                 'redirect_uri': SONGLE_REDIRECT_URI,
             }).prepare()
         return HttpResponseRedirect(request.url)
-
-    

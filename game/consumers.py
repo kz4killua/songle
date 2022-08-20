@@ -7,6 +7,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Get the username, game ID and channel group name
         self.username = self.scope['url_route']['kwargs']['username']
+        self.user_id = self.scope['url_route']['kwargs']['userid']
         self.game_id = self.scope['url_route']['kwargs']['game_id']
         self.group_name = f'game-{self.game_id}'
         # Add this socket to the group
@@ -23,7 +24,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'type': 'broadcast',
                 'message': {
                     'type': 'USER_CONNECTED',
-                    'user': self.username,
+                    'user': {
+                        'username': self.username,
+                        'user_id': self.user_id
+                    },
                     'message': f'User {self.username} has been connected!' 
                 }
             }
@@ -43,7 +47,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'type': 'broadcast',
                 'message': {
                     'type': 'USER_DISCONNECTED',
-                    'user': self.username,
+                    'user': {
+                        'username': self.username,
+                        'user_id': self.user_id
+                    },
                     'message': f'User {self.username} has been disconnected!' 
                 }
             }

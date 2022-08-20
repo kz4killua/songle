@@ -26,6 +26,7 @@
                 <div class="game-subtitle">Create a game</div>
                 <form method="get" action="{% url 'game:create-game' %}">
                     <input type="hidden" value="{{ username }}" name="username">
+                    <input type="hidden" value="{{ user_id }}" name="user_id">
                     <input type="hidden" value="{{ access_token }}" name="access_token">
                     <input type="hidden" value="{{ refresh_token }}" name="refresh_token">
                     <div class="form-input">
@@ -38,6 +39,7 @@
                 <div class="game-subtitle">Join a game</div>
                 <form method="get" action="{% url 'game:join-game' %}">
                     <input type="hidden" value="{{ username }}" name="username">
+                    <input type="hidden" value="{{ user_id }}" name="user_id">
                     <input type="hidden" value="{{ access_token }}" name="access_token">
                     <input type="hidden" value="{{ refresh_token }}" name="refresh_token">
                     <div class="form-input">

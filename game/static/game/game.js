@@ -1,11 +1,14 @@
-// Grab important constants from HTML
-const username = document.querySelector('#username').value;
+// Save important constants
 const gameId = document.querySelector('#game-id').value;
 const playlistId = document.querySelector('#playlist-id').value;
-const isAdmin = document.querySelector('#is-admin').value == 'True';
 const accessToken = document.querySelector('#access-token').value;
 const refreshToken = document.querySelector('#refresh-token').value;
+const currentUser = {
+    'username': document.querySelector('#username').value,
+    'user_id': document.querySelector('#user-id').value
+};
 
+const isAdmin = (currentUser['user_id'] === gameId);
 
 const numberOfTracks = 10;
 const numberOfTrackSuggestions = 5;
@@ -18,8 +21,8 @@ const gameLoadTime = 3_000;
 
 let gameTracks = [];
 
-let users = [];
-let ready = [];
+let connectedUsers = {};
+let readyUsers = [];
 
 let scores = {};
 
@@ -27,12 +30,8 @@ let currentTrack = 0;
 
 let timeouts = [];
 
-
-document.querySelector('#copy-code-button').onclick = function () {
-    navigator.clipboard.writeText(gameId)
-        .then(() => alert("Copied!"));
-}
-
+// Set event handlers
+document.querySelector('#copy-code-button').onclick = copyGameCode;
 document.querySelector('#track-search').onkeyup = searchTrack;
 
 if (isAdmin) {
@@ -47,7 +46,9 @@ const socket = new WebSocket(
     + '/ws/game/'
     + gameId
     + '/username/'
-    + username
+    + currentUser['username']
+    + '/userid/'
+    + currentUser['user_id']
     + '/'
 );
 
@@ -84,7 +85,7 @@ socket.onmessage = (e) => {
             break;
 
         case 'USER_SCORE':
-            userScore(message['user'], message['score']);
+            userScore(message['user']['user_id'], message['score']);
             break;
 
         case 'NEXT_TRACK':
@@ -104,35 +105,34 @@ socket.onclose = (e) => {
 
 
 function userConnected(user) {
-    users.push(user);
-    displayUsers();
+    connectedUsers[user['user_id']] = user;
+    displayConnectedUsers();
 }
 
 
 function userDisconnected(user) {
-    let index = users.indexOf(user);
-    if (index > -1) {
-        users.splice(index, 1);
-    }
-    displayUsers();
+    delete connectedUsers[user['user_id']];
+    displayConnectedUsers();
 }
 
 
-function displayUsers() {
+function displayConnectedUsers() {
 
     // Update the number of connected users
-    document.querySelector('#number-of-connected-users').innerHTML = users.length;
+    document.querySelector('#number-of-connected-users').innerHTML = Object.keys(connectedUsers).length;
 
     // Get the div that holds connected users
     const connectedUsersDiv = document.querySelector('#connected-users');
 
     // Update its children
-    connectedUsersDiv.replaceChildren(...users.map(user => {
-        let div = document.createElement('div');
-        div.setAttribute('class', 'user-display gray-rounded wrap-ellipsis');
-        div.innerHTML = user;
-        return div;
-    }));
+    connectedUsersDiv.replaceChildren(
+        ...Object.values(connectedUsers).map(user => {
+            let div = document.createElement('div');
+            div.setAttribute('class', 'user-display gray-rounded wrap-ellipsis');
+            div.innerHTML = user['username'];
+            return div;
+        })
+    );
 }
 
 
@@ -183,7 +183,7 @@ function nextTrack() {
 
     const trackDivs = document.querySelectorAll('.track-div');
     // Clear the ready list
-    ready.length = 0;
+    readyUsers.length = 0;
 
     if (currentTrack !== 0) {
         // Stop the previous track
@@ -235,7 +235,7 @@ function updateScoresDisplay() {
         // Place cells in the row
         row.append(cell1, cell2)
         // Fill in the user's score details
-        cell1.innerHTML = user;
+        cell1.innerHTML = connectedUsers[user]['username'];
         cell2.innerHTML = scores[user];
         rows.push(row);
     }
@@ -340,8 +340,8 @@ function sendUserReady() {
     socket.send(JSON.stringify(
         {'message': {
             'type': 'USER_READY',
-            'user': username,
-            'message': `User ${username} is ready.`
+            'user': currentUser,
+            'message': `User ${currentUser['username']} is ready.`
         }}
     ));
 }
@@ -350,11 +350,11 @@ function sendUserReady() {
 function userReady(user) {
 
     // Update to the list of ready users
-    ready.push(user);
+    readyUsers.push(user['user_id']);
 
     if (isAdmin) {
         // If all connected users are ready, move to next song
-        if (users.every(item => ready.includes(item))) {
+        if (Object.keys(connectedUsers).every(item => readyUsers.includes(item))) {
             socket.send(JSON.stringify({
                 'message': {
                     'type': 'NEXT_TRACK',
@@ -375,7 +375,7 @@ function sendUserScore() {
     socket.send(JSON.stringify({
         'message': {
             'type': 'USER_SCORE',
-            'user': username,
+            'user': currentUser,
             'score': score,
         }
     }));
@@ -471,4 +471,10 @@ function getTrackArtists(track) {
 
 function hashTrack(track) {
     return `${getTrackArtists(track).sort().join(', ')} - ${track['name']}`
+}
+
+
+function copyGameCode() {
+    navigator.clipboard.writeText(gameId)
+        .then(() => alert("Copied!"));
 }
