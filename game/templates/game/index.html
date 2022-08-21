@@ -7,54 +7,44 @@
 {% endblock %}
 
 {% block main %}
-
-    <div class="center-vertical h30">
-        <div class="full-width">
-            <div class="game-title">Songle</div>
-            <div class="game-subtitle">Play with friends.</div>
-        </div>
+    <div>
+        <div class="game-title">Songle</div>
+        <div class="game-subtitle">Play with friends.</div>
     </div>
 
-    <div class="center-vertical h40">
-        <div class="full-width">
-            {% if not access_token %}
-                <div class="game-subtitle">Log in to Spotify to start playing.</div class="game-subtitle">
-                <a href="{% url 'game:spotify-authorize' %}">
-                    <button class="large-button">Log in to Spotify</button>
-                </a>            
-            {% else %}
-                <div class="game-subtitle">Create a game</div>
-                <form method="get" action="{% url 'game:create-game' %}">
-                    <input type="hidden" value="{{ username }}" name="username">
-                    <input type="hidden" value="{{ user_id }}" name="user_id">
-                    <input type="hidden" value="{{ access_token }}" name="access_token">
-                    <input type="hidden" value="{{ refresh_token }}" name="refresh_token">
-                    <div class="form-input">
-                        <input type="text" name="playlist" placeholder="Enter playlist ID"><button type="submit" class="form-button">Create</button>
-                    </div>
-                </form>
-
-                <div class="game-subtitle">or</div>
-
-                <div class="game-subtitle">Join a game</div>
-                <form method="get" action="{% url 'game:join-game' %}">
-                    <input type="hidden" value="{{ username }}" name="username">
-                    <input type="hidden" value="{{ user_id }}" name="user_id">
-                    <input type="hidden" value="{{ access_token }}" name="access_token">
-                    <input type="hidden" value="{{ refresh_token }}" name="refresh_token">
-                    <div class="form-input">
-                        <input type="text" name="game_id" placeholder="Enter game ID"><button type="submit" class="form-button">Join</button>
-                    </div>
-                </form>
-            {% endif %}
-        </div>
+    <div>
+        {% if not access_token %}
+            <div class="game-subtitle">Log in to Spotify to start playing.</div class="game-subtitle">
+            <a href="{% url 'game:spotify-authorize' %}">
+                <button class="large-button">Log in to Spotify</button>
+            </a>            
+        {% else %}
+            <div class="game-subtitle">Create a game</div>
+            <form method="get" action="{% url 'game:create-game' %}">
+                <input type="hidden" value="{{ username }}" name="username">
+                <input type="hidden" value="{{ user_id }}" name="user_id">
+                <input type="hidden" value="{{ access_token }}" name="access_token">
+                <input type="hidden" value="{{ refresh_token }}" name="refresh_token">
+                <div class="form-input">
+                    <input type="text" name="playlist" placeholder="Enter playlist ID"><button type="submit" class="form-button">Create</button>
+                </div>
+            </form>
+            <div class="game-subtitle">or</div>
+            <div class="game-subtitle">Join a game</div>
+            <form method="get" action="{% url 'game:join-game' %}">
+                <input type="hidden" value="{{ username }}" name="username">
+                <input type="hidden" value="{{ user_id }}" name="user_id">
+                <input type="hidden" value="{{ access_token }}" name="access_token">
+                <input type="hidden" value="{{ refresh_token }}" name="refresh_token">
+                <div class="form-input">
+                    <input type="text" name="game_id" placeholder="Enter game ID"><button type="submit" class="form-button">Join</button>
+                </div>
+            </form>
+        {% endif %}
     </div>
 
-    <div class="center-vertical h20">
-        <div class="full-width">
-            <div class="game-subtitle">Powered by</div>
-            <img src="{% static 'game/spotify/logos/spotify_logo_green.png' %}" alt="Spotify icon" class="spotify-icon-large">
-        </div>
+    <div>
+        <div class="game-subtitle">Powered by</div>
+        <img src="{% static 'game/spotify/logos/spotify_logo_green.png' %}" alt="Spotify icon" class="spotify-icon-large">
     </div>
-
 {% endblock %}

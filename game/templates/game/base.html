@@ -11,11 +11,11 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
 
-    <body>
-        <main>
+    <body class="flex-column">
+        <main class="flex-fill flex-even-space">
             {% block main %}{% endblock %}
-            <footer>&copy {% now "Y" %} Ifeanyi Obinelo</footer>
         </main>
+        <footer>&copy {% now "Y" %} Ifeanyi Obinelo</footer>
         {% block script %}{% endblock %}
     </body>
 </html>

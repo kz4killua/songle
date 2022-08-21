@@ -6,33 +6,73 @@
     --custom-gray: rgb(50, 50, 50);
 }
 
+* {
+    box-sizing: border-box;
+}
+
 html, body {
-    height: 100%;
     width: 100%;
+    height: 100%;
     margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 body {
     background-color: var(--spotify-black);
+    color: var(--spotify-white);
     font-family: sans-serif, Helvetica, Arial;
     text-align: center;
-    overflow: hidden;
+    padding: 20px 0;
+    /* Limit the width of the game. */
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
 }
 
 main {
-    height: 100%;
-    margin: 20px;
-    color: var(--spotify-white);
+    padding: 0 15px;
 }
 
-div {
-    margin: 0 0 15px 0;
+.full-height {
+    height: 100%
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* Set flex display with column flow. */
+.flex-column {
+    display: flex;
+    flex-flow: column;
+}
+
+/* Fill all remaining space on display. */
+.flex-fill {
+    flex: 1 1 auto;
+}
+
+/* Add even space between elements. */
+.flex-even-space {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Do not display this element. */
+.no-display {
+    display: none;
 }
 
 footer {
     width: 100%;
     position: absolute;
     bottom: 0px;
+}
+
+div {
+    margin: 0 0 15px 0;
 }
 
 button {
@@ -70,13 +110,9 @@ button:hover {
     text-overflow: ellipsis;
 }
 
-.full-width {
-    width: 100%;
-}
 
-.full-height {
-    height: 100%
-}
+
+
 
 .h20 {
     height: 20%;
@@ -104,13 +140,13 @@ button:hover {
 
 .game-title {
     font-weight: bolder;
-    font-size: 90px;
+    font-size: 10vh;
     color: var(--spotify-green);
 }
 
 .game-subtitle {
     font-weight: bold;
-    font-size: 25px;    
+    font-size: 3.5vh;    
 }
 
 .spotify-icon-large {
@@ -136,7 +172,6 @@ button:hover {
 }
 
 input {
-    height: 20px;
     background-color: var(--spotify-black);
     color: var(--spotify-white);
     border: 1px solid var(--spotify-white);

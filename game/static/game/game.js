@@ -288,14 +288,18 @@ function updateScoresDisplay() {
 
 
 function hideScores() {
-    document.querySelector('#scores-display').setAttribute('hidden', '');
-    document.querySelector('#playing-room').removeAttribute('hidden');
+    switchDisplay(
+        document.querySelector('#scores-display'),
+        document.querySelector('#playing-room'),
+    )
 }
 
 
 function displayScores() {
-    document.querySelector('#playing-room').setAttribute('hidden', '');
-    document.querySelector('#scores-display').removeAttribute('hidden');
+    switchDisplay(
+        document.querySelector('#playing-room'),
+        document.querySelector('#scores-display'),
+    )
 }
 
 
@@ -370,8 +374,7 @@ function loadGame(tracks) {
 
     setTimeout(() => {
         // Hide the waiting room and show the game room
-        waitingRoom.setAttribute('hidden', '');
-        playingRoom.removeAttribute('hidden');
+        switchDisplay(waitingRoom, playingRoom);
         // Send a ready message
         sendUserReady();
     }, gameLoadTime);
@@ -524,4 +527,11 @@ function hashTrack(track) {
 function copyGameCode() {
     navigator.clipboard.writeText(gameId)
         .then(() => alert("Copied!"));
+}
+
+
+function switchDisplay(previous, current) {
+    // Hide the previous element and show the current one.
+    previous.classList.add('no-display');
+    current.classList.remove('no-display');
 }
