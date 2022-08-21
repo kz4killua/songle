@@ -110,34 +110,6 @@ button:hover {
     text-overflow: ellipsis;
 }
 
-
-
-
-
-.h20 {
-    height: 20%;
-}
-
-.h30 {
-    height: 30%;
-}
-
-.h40 {
-    height: 40%;
-}
-
-.h50 {
-    height: 50%;
-}
-
-.h60 {
-    height: 60%;
-}
-
-.h70 {
-    height: 70%;
-}
-
 .game-title {
     font-weight: bolder;
     font-size: 10vh;
