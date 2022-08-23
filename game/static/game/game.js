@@ -348,9 +348,12 @@ function loadGame(tracks) {
         trackDiv.setAttribute('hidden', '');
         trackDiv.setAttribute('class', 'track-div');
 
-        blankCover.setAttribute('src', 'https://image.shutterstock.com/image-vector/modern-black-white-simple-question-260nw-1892291464.jpg');
-        blankCover.setAttribute('alt', 'Cover of ?');
+
+        blankCover.src = "/static/game/blank.svg"
+        // blankCover.setAttribute('src', '');
+        // blankCover.setAttribute('alt', 'Cover of ?');
         blankCover.setAttribute('class', 'cover-img blank-cover');
+        // blankCover.innerHTML = `<i class="bi bi-question"></i>`
 
         trackCover.setAttribute('src', getTrackCover(track));
         trackCover.setAttribute('alt', `Cover of ${track['name']}`);
