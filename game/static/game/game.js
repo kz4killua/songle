@@ -206,8 +206,12 @@ function sendLoadGame() {
 
 function nextTrack() {
 
+    const trackSearch = document.querySelector('#track-search');
+    
     // Clear input field
-    document.querySelector('#track-search').value = '';
+    trackSearch.value = '';
+    // Enable and focus input
+    trackSearch.disabled = false;
     // Hide the scores display
     hideScores();
 
@@ -304,14 +308,18 @@ function displayScores() {
 
 
 function revealTrack() {
+
+    const trackSearch = document.querySelector('#track-search');
     const trackDivs = document.querySelectorAll('.track-div');
+    // Disable further input
+    trackSearch.disabled = true;
     // Show track image
     trackDivs[currentTrack - 1].querySelector('.blank-cover').setAttribute('hidden', '');
     trackDivs[currentTrack - 1].querySelector('.filled-cover').removeAttribute('hidden')
     // Show artists
     trackDivs[currentTrack - 1].querySelector('.artist-display').innerHTML = getTrackArtists(gameTracks[currentTrack - 1]).join(', ');
     // Add track name
-    document.querySelector('#track-search').value = gameTracks[currentTrack - 1]['name'];
+    trackSearch.value = gameTracks[currentTrack - 1]['name'];
     // Clear autocomplete
     document.querySelector('#autocomplete').replaceChildren();
 }
