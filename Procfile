@@ -1,0 +1,1 @@
+web: gunicorn songle.wsgi --log-file -
