@@ -1,7 +1,0 @@
-WEDNESDAY
-- [ ] Switch to a Redis backend
-- [ ] Host online
-- [ ] Update README.md, add todos (swap out custom CSS, whateves)
-- [ ] Change Spotify songle redirect URI (on spotify)
-- [ ] Change songle constant for redirect URI (locally)
-- [ ] Update allowed hosts
