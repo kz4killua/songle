@@ -7,7 +7,7 @@ import requests
 from django.shortcuts import render
 
 
-SONGLE_REDIRECT_URI = 'http://song-le.herokuapp.com/game/spotifyauthorize'
+SONGLE_REDIRECT_URI = 'http://songle.up.railway.app/game/spotifyauthorize'
 
 
 def index(request, user_data=None):
