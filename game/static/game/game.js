@@ -41,9 +41,9 @@ if (isAdmin) {
 
 // Create and configure a websocket.
 const socket = new WebSocket(
-    'ws://'
+    'wss://'
     + window.location.host
-    + '/ws/game/'
+    + '/wss/game/'
     + gameId
     + '/username/'
     + currentUser['username']
