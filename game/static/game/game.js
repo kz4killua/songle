@@ -36,6 +36,10 @@ document.querySelector('#track-search').onkeyup = searchTrack;
 
 if (isAdmin) {
     document.querySelector('#start-game-button').onclick = sendLoadGame;
+} else {
+    document.querySelector('#allow-autoplay-button').onclick = function () {
+        this.hidden = true;
+    }
 }
 
 
@@ -229,12 +233,25 @@ function nextTrack() {
     // Move to the next track
     currentTrack++;
 
-    // Show the current track div
-    trackDivs[currentTrack - 1].removeAttribute('hidden');
-    // Play the track
-    trackDivs[currentTrack - 1].querySelector('audio').play();
+    let currentTrackDiv = trackDivs[currentTrack - 1];
+    let currentAudio = currentTrackDiv.querySelector('audio');
 
-    timeouts[currentTrack - 1] = setTimeout(endRound, trackPlayTime);
+    // Show the current track div
+    currentTrackDiv.removeAttribute('hidden');
+    // Play the track
+    currentAudio.play()
+    .then(response => {
+        timeouts[currentTrack - 1] = setTimeout(endRound, trackPlayTime);
+    })
+    // If the autoplay is not allowed, show a button to play
+    .catch(error => {
+        currentAudio.setAttribute('controls', '');
+        // When the user starts playback, hide the button and set timeout
+        currentAudio.onplay = () => {
+            currentAudio.removeAttribute('controls');
+            timeouts[currentTrack - 1] = setTimeout(endRound, trackPlayTime);
+        }
+    });
 }
 
 

@@ -29,11 +29,13 @@
             <!--Add so that when a lotta people join, only top show. Or make it scroll.-->
         </div>
 
-        {% if user_id == game_id %}
-            <div>
+        <div>
+            {% if user_id == game_id %}
                 <button class="large-button" id="start-game-button">Start Game</button>
-            </div>
-        {% endif %}
+            {% else %}
+                <button class="large-button" id="allow-autoplay-button">Allow Autoplay</button>
+            {% endif %}
+        </div>
     </div>
 
     <div id="playing-room" class="full-height flex-column no-display">
